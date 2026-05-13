@@ -93,16 +93,34 @@ function saveState() {
 }
 
 function toggleTask(taskId) {
-  state[taskId] = !state[taskId];
+  const wasCompleted = state[taskId];
+  state[taskId] = !wasCompleted;
   saveState();
-  render();
+  updateTaskVisuals(taskId);
+
+  if (state[taskId] && !wasCompleted) {
+    const task = tasks.find(t => t.id === taskId);
+    if (task) {
+      spawnConfetti(task.basePoints > 15 ? 20 : 10);
+      showFloatingPoints(task.basePoints);
+    }
+  }
 }
 
 function toggleBonus(taskId) {
   const key = taskId + '-bonus';
-  state[key] = !state[key];
+  const wasCompleted = state[key];
+  state[key] = !wasCompleted;
   saveState();
-  render();
+  updateHeaderAndCategoryStats(taskId);
+
+  if (state[key] && !wasCompleted) {
+    const task = tasks.find(t => t.id === taskId);
+    if (task) {
+      spawnConfetti(8);
+      showFloatingPoints(task.bonusPoints);
+    }
+  }
 }
 
 function resetAll() {
@@ -148,6 +166,78 @@ function getCategoryCompletionFraction(catId) {
   return completed / catTasks.length;
 }
 
+function updateHeader() {
+  const { total, completed } = calculatePoints();
+  const totalTasks = tasks.length;
+  const totalFraction = totalTasks ? completed / totalTasks : 0;
+
+  const pointsEl = document.getElementById('pointsDisplay');
+  const oldPoints = parseInt(pointsEl.textContent) || 0;
+  pointsEl.textContent = total;
+  if (oldPoints !== total) {
+    pointsEl.classList.remove('pulse');
+    void pointsEl.offsetWidth;
+    pointsEl.classList.add('pulse');
+  }
+
+  document.getElementById('taskCount').textContent = `${completed} / ${totalTasks}`;
+  updateProgressRing(totalFraction);
+}
+
+function updateCategoryStats(catId) {
+  const catEl = document.querySelector(`[data-cat="${catId}"]`);
+  if (!catEl) return;
+
+  const stats = getCategoryStats(catId);
+  const catFraction = getCategoryCompletionFraction(catId);
+  const catPercent = Math.round(catFraction * 100);
+
+  const fractionEl = catEl.querySelector('.cat-fraction');
+  const pointsEl = catEl.querySelector('.cat-points');
+  const progressFill = catEl.querySelector('.category-progress-fill');
+
+  if (fractionEl) fractionEl.textContent = `${stats.completed}/${stats.total}`;
+  if (pointsEl) pointsEl.textContent = `${stats.pointsAvailable}pts`;
+  if (progressFill) progressFill.style.width = `${catPercent}%`;
+
+  if (stats.completed > 0) {
+    catEl.classList.add('has-completions');
+  } else {
+    catEl.classList.remove('has-completions');
+  }
+}
+
+function updateTaskVisuals(taskId) {
+  const taskRow = document.querySelector(`[data-task-id="${taskId}"]`);
+  if (!taskRow) return;
+
+  const wasCompleted = taskRow.classList.contains('completed');
+
+  if (state[taskId]) {
+    taskRow.classList.add('completed');
+    if (!wasCompleted) {
+      taskRow.classList.add('just-completed');
+      setTimeout(() => taskRow.classList.remove('just-completed'), 600);
+    }
+  } else {
+    taskRow.classList.remove('completed');
+  }
+
+  const task = tasks.find(t => t.id === taskId);
+  if (task) {
+    updateCategoryStats(task.categoryId);
+  }
+  updateHeader();
+}
+
+function updateHeaderAndCategoryStats(taskId) {
+  const task = tasks.find(t => t.id === taskId);
+  if (task) {
+    updateCategoryStats(task.categoryId);
+  }
+  updateHeader();
+}
+
 function updateProgressRing(fraction) {
   const circle = document.getElementById('progressRing');
   if (!circle) return;
@@ -155,6 +245,48 @@ function updateProgressRing(fraction) {
   const circumference = 2 * Math.PI * radius;
   const offset = circumference * (1 - fraction);
   circle.style.strokeDashoffset = offset;
+}
+
+/* Confetti */
+function spawnConfetti(count = 12) {
+  const container = document.createElement('div');
+  container.className = 'confetti-container';
+  document.body.appendChild(container);
+
+  const colors = ['#ff2d78', '#ff80a8', '#ffb700', '#ffe4ec', '#ff4d9e', '#ffd166'];
+  const shapes = ['50%', '0%', '2px'];
+
+  for (let i = 0; i < count; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = `${Math.random() * 100}%`;
+    piece.style.top = `${Math.random() * 40 + 10}%`;
+    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.borderRadius = shapes[Math.floor(Math.random() * shapes.length)];
+    piece.style.width = `${Math.random() * 8 + 6}px`;
+    piece.style.height = `${Math.random() * 8 + 6}px`;
+    piece.style.animationDuration = `${Math.random() * 0.6 + 0.8}s`;
+    piece.style.animationDelay = `${Math.random() * 0.2}s`;
+    container.appendChild(piece);
+  }
+
+  setTimeout(() => container.remove(), 1500);
+}
+
+/* Floating Points */
+function showFloatingPoints(points) {
+  const header = document.querySelector('.header-inner');
+  if (!header) return;
+
+  const rect = header.getBoundingClientRect();
+  const el = document.createElement('div');
+  el.className = 'float-pts';
+  el.textContent = `+${points}`;
+  el.style.left = `${rect.left + rect.width / 2}px`;
+  el.style.top = `${rect.top + rect.height / 2}px`;
+  document.body.appendChild(el);
+
+  setTimeout(() => el.remove(), 1000);
 }
 
 function render() {
@@ -214,7 +346,7 @@ function render() {
       const bonusChecked = task.bonusPoints && state[task.id + '-bonus'] ? 'checked' : '';
       const completedClass = state[task.id] ? ' completed' : '';
 
-      html += `<div class="task${completedClass}" style="animation-delay: ${taskDelay}ms">`;
+      html += `<div class="task${completedClass}" data-task-id="${task.id}" style="animation-delay: ${taskDelay}ms">`;
       html += `<label class="checkbox-wrap"><input type="checkbox" ${checked} onchange="toggleTask('${task.id}')" aria-label="Complete task"><span class="checkbox-visual"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span></label>`;
       html += `<div class="task-content"><div class="task-text">${escapeHtml(task.text)}`;
       if (task.bonusCondition) {
@@ -260,7 +392,7 @@ async function init() {
     const lines = text.split('\n').filter(l => l.trim());
     tasks = lines.map((line, i) => parseTask(line, i)).filter(Boolean);
   } catch (e) {
-    document.getElementById('app').innerHTML = '<div class="loading">Error loading tasks. Make sure tasks.txt is in the same directory.</div>';
+    document.getElementById('app').innerHTML = '<div class="loading"><div class="loading-spinner"></div><span>Error loading tasks. Make sure tasks.txt is in the same directory.</span></div>';
     return;
   }
 
@@ -281,9 +413,13 @@ function generateShareText() {
 
   const today = new Date();
   const dateStr = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const timeStr = today.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
-  let text = `\u{1F49C} SENIOR SCAVENGER — ${total} pts (${completed}/${totalTasks} tasks)\n`;
-  text += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+  let text = `\u{1F49C}  S E N I O R   S C A V E N G E R  \u{1F49C}\n`;
+  text += `\n`;
+  text += `        ${total} pts   |   ${completed}/${totalTasks} tasks\n`;
+  text += `        ${'━'.repeat(30)}\n`;
+  text += `\n`;
 
   const grouped = {};
   for (const cat of CATEGORIES) {
@@ -298,7 +434,16 @@ function generateShareText() {
   for (const cat of CATEGORIES) {
     const catTasks = grouped[cat.id];
     if (catTasks.length === 0) continue;
-    text += `— ${cat.name} —\n`;
+
+    const catPts = catTasks.reduce((sum, t) => {
+      let pts = t.basePoints;
+      if (t.bonusPoints && state[t.id + '-bonus']) pts += t.bonusPoints;
+      return sum + pts;
+    }, 0);
+
+    text += `${cat.icon}  ${cat.name.toUpperCase()}  (+${catPts})\n`;
+    text += `${'─'.repeat(28)}\n`;
+
     for (const task of catTasks) {
       let ptsStr = '';
       if (task.basePoints > 0) {
@@ -307,13 +452,16 @@ function generateShareText() {
       if (task.bonusPoints && state[task.id + '-bonus']) {
         ptsStr = ptsStr ? `${task.basePoints + task.bonusPoints} pts (+${task.bonusPoints} bonus)` : `+${task.bonusPoints} bonus pts`;
       }
-      text += `✅ ${task.text} — ${ptsStr}\n`;
+      text += `  \u{2705}  ${task.text}\n`;
+      text += `      ${ptsStr}\n`;
     }
-    text += '\n';
+    text += `\n`;
   }
 
-  text += `\u{1F3C6} Total: ${total} points earned\n`;
-  text += `Generated ${dateStr}`;
+  text += `\u{1F3C6}  TOTAL: ${total} POINTS EARNED\n`;
+  text += `\u{1F4C5}  ${dateStr} @ ${timeStr}\n`;
+  text += `\n`;
+  text += `Check it off. Rack it up. \u{1F48C}`;
 
   return text;
 }
