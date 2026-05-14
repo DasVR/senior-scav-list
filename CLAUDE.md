@@ -35,19 +35,31 @@ Then open `http://localhost:8000`.
 
 ### Categorization (`categorizeTask`)
 
-Tasks are bucketed into 9 categories by keyword matching against `CATEGORY_RULES` (ordered array of `{id, patterns[]}`). The first matching rule wins; anything unmatched falls into `wild-cards`. Rules are applied in the order declared in `CATEGORY_RULES`.
+Tasks are bucketed into 20 categories by keyword matching against `CATEGORY_RULES` (ordered array of `{id, patterns[]}`). The first matching rule wins; anything unmatched falls into `wild-cards`. Rules are applied in the order declared in `CATEGORY_RULES`.
 
-The 9 categories, mapped from the required taxonomy items, in rule-evaluation order:
+The 20 categories, mapped from the required taxonomy items, in rule-evaluation order:
 
-1. **Cops & Authority** 👮 — Cops and authority encounters (cop, officer, handcuff, speeding ticket, tazed, speed limit, strip club)
-2. **Social & Media** 📱 — Performance and social media, plus pranks and mischief (insta, tiktok, post, story, thirst trap, break up, fake proposal, ding dong ditch, tp, etc.)
-3. **Party & Drinking** 🎉 — Party and drinking activities (shot, shotgun, keg, beer, drink, alcohol, bar)
-4. **Restaurants & Dining** 🍽 — Restaurants and diners, including McDonald's and drive-thrus (restaurant, mcdonald, chili, dinner, eat, drive thru)
-5. **Retail & Stores** 🛒 — Walmart, Target, Walgreens, Publix, other stores, and shopping challenges (walmart, target, publix, walgreens, gas station, cashier, aisle)
-6. **Team Challenges** 🤝 — Big challenges and team bonding (team, group, opponents, opponent, bonding)
-7. **Dares & Body** 💋 — Kissing dares, stranger dares, and appearance/body dares (kiss, make out, stranger, hair, shave, tattoo, piercing, flash, etc.)
-8. **Around Town** 🏙 — Elevator, car and driving, beach and water, and general town exploration (elevator, beach, car, drive, ride, school, library, pool, ocean, etc.)
-9. **Wild Cards** 🎲 — Extreme or uncategorizable challenges; fallback for anything that does not match the above (sky dive, steal a street sign, laxatives, kidnap, etc.)
+1. **Restaurants & Diners** 🍽 — Restaurants and diners (restaurant, diner, waiter, waitress, dinner, dining)
+2. **McDonald's** 🍔 — McDonald's specifically (mcdonald, mcdonalds, big mac)
+3. **Elevator** 🏢 — Elevators and lifts (elevator, lift, escalator)
+4. **Walmart** 🛒 — Walmart specifically (walmart, wal-mart)
+5. **Target** 🎯 — Target specifically (target)
+6. **Walgreens** 💊 — Walgreens specifically (walgreens, wal-greens)
+7. **Publix** 🥑 — Publix specifically (publix)
+8. **Other Stores** 🛍 — Other stores and shops (victoria secret, gas station, 7-eleven, shopping cart, cashier, store, shop)
+9. **Car & Driving** 🚗 — Car and driving activities (car, drive, driving, vehicle, road, ride, highway)
+10. **Beach & Water** 🏖 — Beach and water activities (beach, ocean, pool, water, swim, lake, sea, hot tub, fountain)
+11. **Kissing Dares** 💋 — Kissing dares (kiss, make out, makeout, smooch)
+12. **Stranger Dares** 👤 — Stranger dares (stranger, random person, unknown person)
+13. **Performance & Social Media** 📱 — Performance and social media (post, insta, story, tiktok, music video, thirst trap, performance, show)
+14. **Cops & Authority** 👮 — Cops and authority encounters (cop, officer, police, authority, speeding ticket, tazed, handcuff)
+15. **Party & Drinking** 🎉 — Party and drinking activities (party, drink, shot, shots, beer, alcohol, keg)
+16. **Pranks & Mischief** 🎲 — Pranks and mischief (prank, mischief, trick, tp, toilet paper, ding dong ditch, fake proposal)
+17. **Appearance & Body Dares** 💇 — Appearance and body dares (hair, shave, tattoo, piercing, body, dye, nails, wax, bald)
+18. **Around Town** 🏙 — Around town activities (town, local, city, visit, school, hotel, library, castle, golf course)
+19. **Big Challenges** 🏆 — Big challenges (sky dive, steal a street sign, laxatives, kidnap, dunk a basketball, extreme)
+20. **Team Bonding** 🤝 — Team bonding (team bonding, bonding, team building, group activity, teammate, team member)
+21. **Wild Cards** 🎰 — Fallback for anything that does not match the above
 
 ### State
 
@@ -57,7 +69,7 @@ The 9 categories, mapped from the required taxonomy items, in rule-evaluation or
 
 ### Rendering
 
-- Categories render as collapsible white cards. Default open state: `wild-cards` is open on first load; all others persist their DOM `open` class across re-renders.
+- Categories render as collapsible white cards. Default open state: `restaurants` is open on first load; all others persist their DOM `open` class across re-renders.
 - **Header** contains a circular SVG progress ring (`updateProgressRing`) showing overall task completion fraction, plus a live points counter with `pulse` animation on change.
 - **Category headers** include a mini horizontal progress bar showing completion fraction within that category.
 - Completed tasks get reduced opacity (`0.5`) and strikethrough text. Categories with any checked task get a stronger pink border (`has-completions`).
