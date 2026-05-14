@@ -35,18 +35,19 @@ Then open `http://localhost:8000`.
 
 ### Categorization (`categorizeTask`)
 
-Tasks are bucketed into 8 categories by keyword matching against `CATEGORY_RULES` (ordered array of `{id, patterns[]}`). The first matching rule wins; anything unmatched falls into `wild-cards`. Rules are applied in the order declared in `CATEGORY_RULES`.
+Tasks are bucketed into 9 categories by keyword matching against `CATEGORY_RULES` (ordered array of `{id, patterns[]}`). The first matching rule wins; anything unmatched falls into `wild-cards`. Rules are applied in the order declared in `CATEGORY_RULES`.
 
-The 8 categories, in rule-evaluation order:
+The 9 categories, mapped from the required taxonomy items, in rule-evaluation order:
 
-1. **Social & Media** — Social media posts, public stunts, pranks, and mischief (insta, tiktok, post, story, break up, fake proposal, ding dong ditch, etc.)
-2. **Cops & Authority** — Law enforcement, authority figures, and high-risk encounters (cop, officer, handcuff, speeding ticket, tazed, speed limit, strip club)
-3. **Team Challenges** — Group activities, team bonding, and opponent interactions (team, group, opponents, opponent)
-4. **Food & Drink** — Eating, drinking, shots, keg stands, and restaurant visits (restaurant, mcdonald, eat, drink, shot, beer, party, etc.)
-5. **Dares & Body** — Physical dares, body modifications, and stranger interactions (kiss, make out, selfie, hair, shave, stranger, flash, etc.)
-6. **Retail & Shops** — Store visits and shopping challenges (walmart, target, walgreens, publix, gas station, cashier, aisle)
-7. **Around Town** — Local landmarks, travel, elevators, cars, beaches, pools, and town exploration (elevator, beach, car, drive, ride, school, library, etc.)
-8. **Wild Cards** — Extreme or uncategorizable challenges; also the fallback for anything that does not match the above patterns (sky dive, steal a street sign, laxatives, kidnap, etc.)
+1. **Cops & Authority** 👮 — Cops and authority encounters (cop, officer, handcuff, speeding ticket, tazed, speed limit, strip club)
+2. **Social & Media** 📱 — Performance and social media, plus pranks and mischief (insta, tiktok, post, story, thirst trap, break up, fake proposal, ding dong ditch, tp, etc.)
+3. **Party & Drinking** 🎉 — Party and drinking activities (shot, shotgun, keg, beer, drink, alcohol, bar)
+4. **Restaurants & Dining** 🍽 — Restaurants and diners, including McDonald's and drive-thrus (restaurant, mcdonald, chili, dinner, eat, drive thru)
+5. **Retail & Stores** 🛒 — Walmart, Target, Walgreens, Publix, other stores, and shopping challenges (walmart, target, publix, walgreens, gas station, cashier, aisle)
+6. **Team Challenges** 🤝 — Big challenges and team bonding (team, group, opponents, opponent, bonding)
+7. **Dares & Body** 💋 — Kissing dares, stranger dares, and appearance/body dares (kiss, make out, stranger, hair, shave, tattoo, piercing, flash, etc.)
+8. **Around Town** 🏙 — Elevator, car and driving, beach and water, and general town exploration (elevator, beach, car, drive, ride, school, library, pool, ocean, etc.)
+9. **Wild Cards** 🎲 — Extreme or uncategorizable challenges; fallback for anything that does not match the above (sky dive, steal a street sign, laxatives, kidnap, etc.)
 
 ### State
 

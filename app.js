@@ -1,23 +1,25 @@
 const CATEGORIES = [
-  { id: 'social-media', name: 'Social & Media', icon: '\u{1F4F1}' },
-  { id: 'cops-authority', name: 'Cops & Authority', icon: '\u{1F46E}' },
-  { id: 'team-challenges', name: 'Team Challenges', icon: '\u{1F91D}' },
-  { id: 'food-drink', name: 'Food & Drink', icon: '\u{1F357}' },
-  { id: 'dares-body', name: 'Dares & Body', icon: '\u{1F4A6}' },
-  { id: 'retail-shops', name: 'Retail & Shops', icon: '\u{1F6CD}' },
-  { id: 'around-town', name: 'Around Town', icon: '\u{1F3DB}' },
-  { id: 'wild-cards', name: 'Wild Cards', icon: '\u{1F0CF}' },
+  { id: 'cops-authority',    name: 'Cops & Authority',      icon: '\u{1F46E}' },
+  { id: 'social-media',      name: 'Social & Media',        icon: '\u{1F4F1}' },
+  { id: 'party-drinking',    name: 'Party & Drinking',      icon: '\u{1F37E}' },
+  { id: 'restaurants',       name: 'Restaurants & Dining',  icon: '\u{1F37D}' },
+  { id: 'retail-stores',     name: 'Retail & Stores',       icon: '\u{1F6CD}' },
+  { id: 'team-challenges',   name: 'Team Challenges',       icon: '\u{1F91D}' },
+  { id: 'dares-body',        name: 'Dares & Body',          icon: '\u{1F48B}' },
+  { id: 'around-town',       name: 'Around Town',           icon: '\u{1F3DB}' },
+  { id: 'wild-cards',        name: 'Wild Cards',            icon: '\u{1F0CF}' },
 ];
 
 const CATEGORY_RULES = [
-  { id: 'social-media', patterns: ['post ', ' insta ', 'story', 'tiktok', 'tik tok', 'music video', 'thirst trap', 'public break up', 'break up', 'fake proposal', 'fake birthday', 'ding dong ditch', 'tp ', 'toilet paper', 'chinese fire drill'] },
-  { id: 'cops-authority', patterns: ['cop', 'officer', 'handcuff', 'speeding ticket', 'tazed', 'speed limit', 'strip club'] },
-  { id: 'team-challenges', patterns: ['team ', 'teammate', 'team member', 'team dinner', 'team selfie', 'team bonding', 'group pic', 'group swim', 'group picture', 'every guy', 'each team member', 'full team', 'whole group', '4 team members', '3 team members', 'opponents team', 'opponent', 'opponent for', '4 opponents'] },
-  { id: 'food-drink', patterns: ['restaurant', 'mcdonald', 'chili', 'bar ', 'drive thru', 'drive-thru', 'eat', 'drink', 'shot ', 'shots', 'shotgun', 'keg stand', 'beer', 'slurpee', 'sprite and banana', '711', 'ice cream', 'slushee', 'condim', 'chip challenge', 'one chip challenge', 'krispy kreme', 'cake with chocolate', 'candy salad', 'dunkaroo', 'shoey', 'dinner', 'alcohol', 'party'] },
-  { id: 'dares-body', patterns: ['kiss', 'make out', 'makeout', 'hair', 'shave', 'buzz cut', 'bleach', 'dye ', 'tattoo', 'piercing', 'hickey', 'eyebrow', 'waxx', 'nails', 'selfie', 'body shot', 'twerk', 'bite', 'tickle', 'bald', 'lipstick', 'forehead', 'butt', 'spit shot', 'stranger', 'pants', 'blowjob', 'flash', 'whipped'] },
-  { id: 'retail-shops', patterns: ['walmart', 'publix', 'walgreens', 'victoria secret', 'target', '7-eleven', '7 eleven', 'gas station', 'shopping cart', 'cashier', 'aisle'] },
-  { id: 'around-town', patterns: ['elevator', 'beach', 'ocean', 'pool', 'hot tub', 'fountain', 'trampoline', 'school', 'cemetery', 'golf course', 'firehouse', 'castle', 'hotel', 'library', 'church of scientology', 'rollercoaster', 'ride ', 'drive ', 'car ', 'sneak into', 'visit ', 'go to ', 'side of the road', 'side of the street', 'parking lot', 'farm animal', 'house being built', 'neighbors house', 'roof of a house', 'tall tree', 'baseball field', 'moving car', 'take a picture', 'take a pic', 'picture with', 'pic with', 'dance with', 'karaoke', 'bridge', 'public area'] },
-  { id: 'wild-cards', patterns: ['sky dive', 'skydive', 'steal a street sign', 'laxatives', 'kidnap', 'dunk a basketball', 'public dumpster', 'peanut butter on a team', 'run out of gas', 'superman a roach', 'tip over a cow'] },
+  { id: 'cops-authority', patterns: ['cop', 'officer', 'handcuff', 'speeding ticket', 'tazed', 'speed limit', 'strip club', 'get arrested'] },
+  { id: 'social-media', patterns: ['post ', ' insta ', 'story', 'tiktok', 'tik tok', 'music video', 'thirst trap', 'public break up', 'break up', 'fake proposal', 'fake birthday', 'ding dong ditch', 'tp ', 'toilet paper', 'chinese fire drill', 'stage a public', 'public dumpster', 'dumpster', 'film a tiktok', 'recreate a tiktok', 'public break', 'stage break'] },
+  { id: 'party-drinking', patterns: ['shot ', 'shots', 'shotgun', 'keg stand', 'beer', 'slurpee', 'sprite and banana', '711', 'slushee', 'drink', 'alcohol', 'party', 'bar ', 'beer mile', 'every guy', 'everyone but dd', 'whole group', 'dd '] },
+  { id: 'restaurants', patterns: ['restaurant', 'mcdonald', 'chili', 'drive thru', 'drive-thru', 'dinner', 'eat', 'ice cream', 'krispy kreme', 'candy salad', 'dunkaroo', 'shoey', 'food', 'waiter', 'waitress', 'menu', 'drive-through', 'dine'] },
+  { id: 'retail-stores', patterns: ['walmart', 'publix', 'walgreens', 'victoria secret', 'target', '7-eleven', '7 eleven', 'gas station', 'shopping cart', 'cashier', 'aisle', 'buy ', 'store', 'purchase', 'checkout'] },
+  { id: 'team-challenges', patterns: ['team ', 'teammate', 'team member', 'team dinner', 'team selfie', 'team bonding', 'group pic', 'group swim', 'group picture', 'each team member', 'full team', '4 team members', '3 team members', 'opponents team', 'opponent', 'opponent for', '4 opponents', 'opponents'] },
+  { id: 'dares-body', patterns: ['kiss', 'make out', 'makeout', 'hair', 'shave', 'buzz cut', 'bleach', 'dye ', 'tattoo', 'piercing', 'hickey', 'eyebrow', 'waxx', 'nails', 'body shot', 'twerk', 'bite', 'tickle', 'bald', 'lipstick', 'forehead', 'butt', 'spit shot', 'stranger', 'pants', 'blowjob', 'flash', 'whipped', 'naked', 'nude', 'strip ', 'undress'] },
+  { id: 'around-town', patterns: ['elevator', 'beach', 'ocean', 'pool', 'hot tub', 'fountain', 'trampoline', 'school', 'cemetery', 'golf course', 'firehouse', 'castle', 'hotel', 'library', 'church of scientology', 'rollercoaster', 'ride ', 'drive ', 'car ', 'sneak into', 'visit ', 'go to ', 'side of the road', 'side of the street', 'parking lot', 'farm animal', 'house being built', 'neighbors house', 'roof of a house', 'tall tree', 'baseball field', 'moving car', 'take a picture', 'take a pic', 'picture with', 'pic with', 'dance with', 'karaoke', 'bridge', 'public area', 'beach ', 'pool ', 'ocean ', 'fountain '] },
+  { id: 'wild-cards', patterns: ['sky dive', 'skydive', 'steal a street sign', 'laxatives', 'kidnap', 'dunk a basketball', 'run out of gas', 'superman a roach', 'tip over a cow', 'get tazed'] },
 ];
 
 function categorizeTask(text) {
